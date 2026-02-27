@@ -1,0 +1,35 @@
+dvc_s3
+python-dotenv
+mlflow
+dagshub
+scikit-learn
+
+# Data Processing
+pandas
+numpy
+
+# NLP Libraries
+spacy
+nltk
+
+# Web Framework
+Flask
+gunicorn
+
+# Monitoring
+prometheus-client
+
+# Python Environment
+python-dotenv
+
+# Testing
+pytest
+great-expectations
+
+# Utilities
+requests
+click
+
+pathspec<0.12
+dvc
+-e .

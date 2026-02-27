@@ -5,12 +5,6 @@ datas/
 cred.txt
 logs/
 
-myvenv/
-mlflow/
-
-notebooks/dataset_fraud.csv
-notebooks/balanced_fraud_dataset.csv
-*.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
