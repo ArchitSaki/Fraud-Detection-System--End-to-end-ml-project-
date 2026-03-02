@@ -42,7 +42,7 @@ def load_data(data_url):
 def format_data(df):
     try:
         logging.info('Table formatting started')
-        df = df.drop(["nameOrig", "nameDest", "isFlaggedFraud"], axis=1)
+        df = df.drop(["step","nameOrig", "nameDest", "isFlaggedFraud"], axis=1)
         return df
     except Exception as e:
         logging.error('Unexpected error occurred while formatting the data: %s', e)

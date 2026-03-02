@@ -5,6 +5,7 @@ from src.logger import logging
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import pickle
+from imblearn.over_sampling import SMOTE
 
 def load_data(data_path):
     try:
@@ -20,7 +21,7 @@ def load_data(data_path):
 
 def train_model(X_train,y_train):
     try:
-        rf=RandomForestClassifier(max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=200)
+        rf=RandomForestClassifier(max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=200,class_weight="balanced")
         rf.fit(X_train,y_train)
         logging.info('model training started.....')
         return rf
@@ -41,7 +42,11 @@ def main():
         X_train = train_data.iloc[:, :-1].values
         y_train = train_data.iloc[:, -1].values
 
-        clf = train_model(X_train, y_train)
+        sm = SMOTE(random_state=42, k_neighbors=3)
+        X_resampled, y_resampled = sm.fit_resample(X_train, y_train)
+        # smote = SMOTE(random_state=42)
+        # X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+        clf = train_model(X_resampled, y_resampled)
         
         save_model(clf, 'models/model.pkl')
     except Exception as e:

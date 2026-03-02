@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fraud Detection System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            width: 420px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0 14px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .fraud {
+            background: #ffdddd;
+            color: #c0392b;
+        }
+
+        .legit {
+            background: #ddffdd;
+            color: #27ae60;
+        }
+
+        .prob {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Fraud Detection System</h2>
+
+    <form action="/predict" method="post">
+
+        <label>Transaction Type</label>
+        <select name="type" required>
+            <option value="PAYMENT">PAYMENT</option>
+            <option value="TRANSFER">TRANSFER</option>
+            <option value="CASH_OUT">CASH_OUT</option>
+            <option value="DEBIT">DEBIT</option>
+            <option value="CASH_IN">CASH_IN</option>
+        </select>
+
+        <label>Amount</label>
+        <input type="number" step="any" name="amount" required>
+
+        <label>Sender Name</label>
+        <input type="text" name="nameOrig" required>
+
+        <label>Old Balance Origin</label>
+        <input type="number" step="any" name="oldbalanceOrg" required>
+
+        <label>New Balance Origin</label>
+        <input type="number" step="any" name="newbalanceOrig" required>
+
+        <label>Receiver Name</label>
+        <input type="text" name="nameDest" required>
+
+        <label>Old Balance Destination</label>
+        <input type="number" step="any" name="oldbalanceDest" required>
+
+        <label>New Balance Destination</label>
+        <input type="number" step="any" name="newbalanceDest" required>
+
+        <button type="submit">Check Transaction</button>
+    </form>
+
+    {% if result %}
+        <div class="result {% if result == 'Fraud Transaction' %}fraud{% else %}legit{% endif %}">
+            {{ result }}
+            {% if probability %}
+                <div class="prob">
+                    Fraud Probability: {{ probability }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
