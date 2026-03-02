@@ -19,7 +19,7 @@ class FlaskAppTests(unittest.TestCase):
 
     def test_predict_page(self):
         test_data = {
-            "type": "TRANSFER",
+            "type": "4",
             "amount": "1000",
             "nameOrig": "C123",
             "oldbalanceOrg": "5000",
