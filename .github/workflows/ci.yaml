@@ -1,6 +1,9 @@
 name: CI Pipeline
 
-on: push
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   project-testing:
@@ -11,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
@@ -24,20 +27,19 @@ jobs:
             ${{ runner.os }}-pip-
 
       - name: install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Install spaCy model
         run: python -m spacy download en_core_web_sm
 
       - name: run pipeline
         env:
+          CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-        run: |
-          dvc repro
+        run: dvc repro
 
       - name: Run model tests
         env:
@@ -51,8 +53,8 @@ jobs:
           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
         run: python script/promote_model.py
 
-      # - name: Run Flask app tests
-      #   if: success()
-      #   env:
-      #     CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
-      #   run: python -m unittest tests/test_flask_app.py
+      - name: Run Flask app tests
+        if: success()
+        env:
+          CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+        run: python -m unittest tests/test_flask_app.py
