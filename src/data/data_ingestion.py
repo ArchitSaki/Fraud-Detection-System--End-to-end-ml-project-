@@ -39,14 +39,14 @@ def load_data(data_url):
         raise
 
 
-def format_data(df):
-    try:
-        logging.info('Table formatting started')
-        df = df.drop(["step","nameOrig", "nameDest", "isFlaggedFraud"], axis=1)
-        return df
-    except Exception as e:
-        logging.error('Unexpected error occurred while formatting the data: %s', e)
-        raise
+# def format_data(df):
+    # try:
+    #     logging.info('Table formatting started')
+    #     df = df.drop(["nameOrig", "nameDest"], axis=1)
+    #     return df
+    # except Exception as e:
+    #     logging.error('Unexpected error occurred while formatting the data: %s', e)
+    #     raise
 
 
 def save_data(train_data, test_data, data_path):
@@ -76,7 +76,7 @@ def main():
                 aws_secret_key=os.getenv("AWS_SECRET_ACCESS_KEY")
                 )
         df=s3.get_file_s3("data.csv")
-        df = format_data(df)
+        # df = format_data(df)
 
         train_data, test_data = train_test_split(df, test_size=test_size, random_state=42)
         
