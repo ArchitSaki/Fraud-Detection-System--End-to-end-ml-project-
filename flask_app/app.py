@@ -70,10 +70,10 @@ def preprocess_input(data):
     df["orgBalanceDiff"] = df["oldbalanceOrg"] - df["newbalanceOrig"]
     df["destBalanceDiff"] = df["newbalanceDest"] - df["oldbalanceDest"]
 
-    # Drop columns not used
+    # Drop unused columns
     df.drop(["nameOrig", "nameDest", "step"], axis=1, inplace=True, errors="ignore")
 
-    # Correct column order (important)
+    # Base features
     df = df[
         [
             "type",
@@ -87,7 +87,14 @@ def preprocess_input(data):
         ]
     ]
 
-    # Scaling
+    # Match scaler features
+    expected_features = list(scaler.feature_names_in_)
+    for col in expected_features:
+        if col not in df.columns:
+            df[col] = 0
+
+    df = df[expected_features]
+
     df_scaled = scaler.transform(df)
 
     return df_scaled
