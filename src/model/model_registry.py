@@ -9,8 +9,23 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
 
-mlflow.set_tracking_uri('https://dagshub.com/ArchitSaki/Fraud-Detection-System--End-to-end-ml-project-.mlflow')
-dagshub.init(repo_owner='ArchitSaki', repo_name='Fraud-Detection-System--End-to-end-ml-project-', mlflow=True)
+
+dagshub_token = os.getenv("CAPSTONE_TEST")
+if not dagshub_token:
+    raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "ArchitSaki"
+repo_name = "Fraud-Detection-System--End-to-end-ml-project-"
+# Set up MLflow tracking URI
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
+
+
+# mlflow.set_tracking_uri('https://dagshub.com/ArchitSaki/Fraud-Detection-System--End-to-end-ml-project-.mlflow')
+# dagshub.init(repo_owner='ArchitSaki', repo_name='Fraud-Detection-System--End-to-end-ml-project-', mlflow=True)
 
 def load_model_info(file_path):
     try:
