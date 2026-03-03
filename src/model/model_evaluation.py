@@ -24,6 +24,9 @@ repo_name = "Fraud-Detection-System--End-to-end-ml-project-"
 # Set up MLflow tracking URI
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
+
+
+#vjldkv
 #mlflow
 # mlflow.set_tracking_uri('https://dagshub.com/ArchitSaki/Fraud-Detection-System--End-to-end-ml-project-.mlflow')
 # dagshub.init(repo_owner='ArchitSaki', repo_name='Fraud-Detection-System--End-to-end-ml-project-', mlflow=True)
