@@ -17,3 +17,4 @@ EXPOSE 5000
 #Prod
 #jcbljlb
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "app:app"]
+#jhdgkdkfhdk
