@@ -29,7 +29,7 @@ mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 # dagshub.init(repo_owner='ArchitSaki', repo_name='Fraud-Detection-System--End-to-end-ml-project-', mlflow=True)
 
 # Load models
-label_encoder = pickle.load(open("models/label_encoder.pkl", "rb"))
+# label_encoder = pickle.load(open("models/label_encoder.pkl", "rb"))
 scaler = pickle.load(open("models/scaler.pkl", "rb"))
 model = pickle.load(open("models/model.pkl", "rb"))
 
@@ -74,6 +74,8 @@ def preprocess_input(data):
 
     df["type"] = df["type"].map(type_mapping)
 
+    if df["type"].isnull().any():
+        raise ValueError("Invalid transaction type")
     # Feature Engineering
     df["orgBalanceDiff"] = df["oldbalanceOrg"] - df["newbalanceOrig"]
     df["destBalanceDiff"] = df["newbalanceDest"] - df["oldbalanceDest"]
@@ -144,7 +146,7 @@ def predict():
         prediction = "Fraud Transaction"
         pred_class = 1
     else:
-        prediction = "Legitimate Tra nsaction"
+        prediction = "Legitimate Transaction"
         pred_class = 0
 
     # Prometheus metric
