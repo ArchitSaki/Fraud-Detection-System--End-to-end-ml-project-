@@ -29,7 +29,7 @@ mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 # dagshub.init(repo_owner='ArchitSaki', repo_name='Fraud-Detection-System--End-to-end-ml-project-', mlflow=True)
 
 # Load models
-# label_encoder = pickle.load(open("models/label_encoder.pkl", "rb"))
+label_encoder = pickle.load(open("models/label_encoder.pkl", "rb"))
 scaler = pickle.load(open("models/scaler.pkl", "rb"))
 model = pickle.load(open("models/model.pkl", "rb"))
 
@@ -72,7 +72,8 @@ def preprocess_input(data):
         "CASH_IN":4
     }
 
-    df["type"] = df["type"].map(type_mapping)
+    # df["type"] = df["type"].map(type_mapping)
+    df["type"] = label_encoder.transform(df["type"].astype(str))
 
     if df["type"].isnull().any():
         raise ValueError("Invalid transaction type")
