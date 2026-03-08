@@ -61,19 +61,24 @@ PREDICTION_COUNT = Counter(
 
 # Preprocessing function
 def preprocess_input(data):
+
     df = pd.DataFrame([data])
 
-    # Label Encoding
-    df["type"] = label_encoder.transform(df["type"].astype(str))
+    type_mapping = {
+        "PAYMENT":0,
+        "TRANSFER":1,
+        "CASH_OUT":2,
+        "DEBIT":3,
+        "CASH_IN":4
+    }
 
-    # Feature Engineering
+    df["type"] = df["type"].map(type_mapping)
+
     df["orgBalanceDiff"] = df["oldbalanceOrg"] - df["newbalanceOrig"]
     df["destBalanceDiff"] = df["newbalanceDest"] - df["oldbalanceDest"]
 
-    # Drop unused columns
-    df.drop(["nameOrig", "nameDest", "step"], axis=1, inplace=True, errors="ignore")
+    df.drop(["nameOrig","nameDest","step"],axis=1,inplace=True,errors="ignore")
 
-    # Base features
     df = df[
         [
             "type",
@@ -83,17 +88,9 @@ def preprocess_input(data):
             "oldbalanceDest",
             "newbalanceDest",
             "orgBalanceDiff",
-            "destBalanceDiff",
+            "destBalanceDiff"
         ]
     ]
-
-    # Match scaler features
-    expected_features = list(scaler.feature_names_in_)
-    for col in expected_features:
-        if col not in df.columns:
-            df[col] = 0
-
-    df = df[expected_features]
 
     df_scaled = scaler.transform(df)
 
