@@ -65,15 +65,15 @@ def preprocess_input(data):
     df = pd.DataFrame([data])
 
     type_mapping = {
-        "PAYMENT":0,
-        "TRANSFER":1,
-        "CASH_OUT":2,
-        "DEBIT":3,
-        "CASH_IN":4
-    }
+    "PAYMENT": 3,
+    "TRANSFER": 4,
+    "CASH_OUT": 1,
+    "DEBIT": 2,
+    "CASH_IN": 0
+}
 
-    # df["type"] = df["type"].map(type_mapping)
-    df["type"] = label_encoder.transform(df["type"].astype(str))
+    df["type"] = df["type"].map(type_mapping)
+    # df["type"] = label_encoder.transform(df["type"].astype(str))
 
     if df["type"].isnull().any():
         raise ValueError("Invalid transaction type")
