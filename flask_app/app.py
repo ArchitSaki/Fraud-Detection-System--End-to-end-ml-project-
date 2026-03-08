@@ -74,10 +74,11 @@ def preprocess_input(data):
 
     df["type"] = df["type"].map(type_mapping)
 
+    # Feature Engineering
     df["orgBalanceDiff"] = df["oldbalanceOrg"] - df["newbalanceOrig"]
     df["destBalanceDiff"] = df["newbalanceDest"] - df["oldbalanceDest"]
 
-    df.drop(["nameOrig","nameDest","step"],axis=1,inplace=True,errors="ignore")
+    df.drop(["nameOrig","nameDest","step"], axis=1, inplace=True, errors="ignore")
 
     df = df[
         [
@@ -91,6 +92,15 @@ def preprocess_input(data):
             "destBalanceDiff"
         ]
     ]
+
+    # 🔹 Align features with scaler
+    expected_features = list(scaler.feature_names_in_)
+
+    for col in expected_features:
+        if col not in df.columns:
+            df[col] = 0
+
+    df = df[expected_features]
 
     df_scaled = scaler.transform(df)
 
